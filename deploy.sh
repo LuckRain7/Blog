@@ -11,7 +11,7 @@ set -e
 # 生成静态文件
 yarn build
 
-git add .
+git add -A
 git commit -m 'update'
 git push -f git@e.coding.net:luckrain7/blog.git master:dev
 
