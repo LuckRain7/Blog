@@ -1,14 +1,12 @@
 ---
 title: 在 Array.forEach 中正确使用 Async
 date: 2020-04-10 16:12:22
-tags:
+description: 如何异步遍历元素
 category: [JavaScript]
 tag: [async, Array, JavaScript]
 ---
 
-# 如何在 Array.forEach 中正确使用 Async
-
-本文译自[How to use async functions with Array.forEach in Javascript - **Tamás Sallai** ](https://advancedweb.hu/how-to-use-async-functions-with-array-foreach-in-javascript/)。
+> 本文译自[How to use async functions with Array.forEach in Javascript - **Tamás Sallai** ](https://advancedweb.hu/how-to-use-async-functions-with-array-foreach-in-javascript/)。
 
 ## 0. 如何异步遍历元素
 
@@ -54,7 +52,7 @@ console.log("Finished async");
 // 1
 ```
 
-![forEach](/img/article/20200410/forEach.png)
+![forEach](/images/2020/04/10/forEach.png)
 
 ## 2. 控制时间
 
@@ -82,7 +80,7 @@ console.log("Finished async");
 // Finished async
 ```
 
-![map](/img/article/20200410/map.png)
+![map](/images/2020/04/10/map.png)
 
 进行此更改后，“完成的异步操作”排在最后。
 
@@ -107,7 +105,7 @@ console.log("Finished async");
 // Finished async
 ```
 
-![reduce](/img/article/20200410/reduce.png)
+![reduce](/images/2020/04/10/reduce.png)
 
 这样，元素依次依次处理，程序执行将等待整个数组完成后再继续。
 

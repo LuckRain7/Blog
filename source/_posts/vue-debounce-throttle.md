@@ -1,13 +1,11 @@
 ---
 title: 如何在Vue中优雅的使用防抖节流
 date: 2020-04-09 18:40:00
-tags:
+description: 防抖：防止重复点击触发事件<br>节流：指定时间间隔内只会执行一次任务
+
 category: [Vue]
 tag: [Vue, JavaScript]
 ---
-
-# 如何在 Vue 中优雅的使用防抖节流
-
 ## 1. 什么是防抖节流
 
 #### 防抖：防止重复点击触发事件
@@ -62,7 +60,7 @@ function throttle(fn, time) {
 
 我的应用场景：头像裁剪组件，对滚轮缩放后生成预览图片进行防抖处理
 
-![场景](/img/vue/touxiang.gif)
+![场景](/images/2020/04/09/touxiang.gif)
 
 因为 Vue 组件中的 `this` 原因
 
