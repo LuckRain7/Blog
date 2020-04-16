@@ -1,0 +1,240 @@
+# --------------------------
+# 博主信息部件(右侧博主信息部件)
+# -------------------------
+# 今日诗词 jinrishici 如果设置为一个字符串，这个字符串会变成占位文字，加载失败时显示。
+#
+blogger: # 小部件名
+  class: blogger # 小部件类别
+  display: [desktop, mobile] # [小部件在桌面端显示, 小部件在移动设备显示]
+  avatar: http://img.rain7.top/zhenyu-logo
+  shape: rectangle # circle, rectangle
+  url: /about/
+  title: Hello World
+  subtitle: 因为热爱，所以Coding
+  jinrishici: false # 是否加诗词Poetry Today. You can set a string, and it will be displayed when loading fails.
+  social: true # social 的具体内容请在网站页脚部分设置。
+
+# -----------
+# 文章目录部件
+# -----------
+# 这个部件只能放置在侧边栏，并且在文章中有效。
+# 在移动设备中预览时，手指向上滑动时，导航栏右边会出现 TOC 按钮，点击即可展开 TOC 部件。
+# -------------------------------------------------------------
+toc:
+  class: toc
+  display: [desktop, mobile] # [desktop, mobile]
+  header:
+    icon: fas fa-list
+    title: 本文目录
+  list_number: false # 显示章节序号
+  min_depth: 2 # 最小深度标题
+  max_depth: 3 # 最大深度标题
+
+# -----------
+# 文章分类部件
+# -----------
+# 这个部件可以直接显示所有文章分类，如果您希望有一个独立的页面来展示，
+# 需要自己创建一个文件，具体操作在「页面」部分文档中。
+# -------------------------------------------------------------
+category:
+  class: category
+  display: [desktop] # [desktop, mobile]
+  header:
+    icon: fas fa-folder-open
+    title: 文章分类
+    url: /categories/
+
+# -----------
+# 标签云部件
+# -----------
+# 这个部件可以直接显示所有文章分类，如果您希望有一个独立的页面来展示，
+# 需要自己创建一个文件，具体操作在「页面」部分文档中。
+# -------------------------------------------------------------
+
+tagcloud:
+  class: tagcloud
+  display: [desktop] # [desktop, mobile]
+  header:
+    icon: fas fa-tags
+    title: 热门标签
+    url: /blog/tags/
+  min_font: 14
+  max_font: 24
+  color: true
+  start_color: "#999"
+  end_color: "#555"
+
+# -----------
+# 相关文章部件 ---------- 未开启
+# -----------
+# 这个小部件建议放置在文章页脚，要使用这个部件，您需要安装插件：
+# npm i -S hexo-related-popular-posts
+# 值得注意的是，开启了这个功能之后，每次修改文章内容包括 front-matter 之后，都需要重新 hexo s。
+# -------------------------------------------------------------
+
+related_posts:
+  class: related_posts # npm i -S hexo-related-popular-posts
+  display: [desktop, mobile] # [desktop, mobile]
+  header:
+    icon: fas fa-bookmark
+    title: 相关文章
+  max_count: 5
+
+
+# -----------
+# 文章版权部件
+# -----------
+# 这个部件只可以放置在文章页脚。
+# -------------------------------------------------------------
+
+copyright:
+  class: copyright
+  display: [desktop, mobile] # [desktop, mobile]
+  blockquote: true # 是否块高亮
+  # permalink: '本文永久链接是：'
+  content:
+    - '博客内容遵循 署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议'
+    # - permalink
+
+
+
+# -----------
+# 二维码部件
+# -----------
+# 您可以放置在文章页脚用于展示打赏图片，也可以放置在侧边栏。
+# -------------------------------------------------------------
+
+donate:
+  class: qrcode
+  display: [desktop, mobile]
+  height: 200px  
+  fancybox: true #????
+  images:
+    # - http://img.rain7.top/wx.png # 微信推广码
+    # - https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/qrcode/wiki_volantis.png
+
+
+# -----------
+# 通用文本部件
+# -----------
+# 您可以创建用于展示任何文本内容的文本部件。
+# -------------------------------------------------------------
+repos:
+  class: text
+  display: [desktop]
+  header:
+    icon: fab fa-github
+    title: 点个赞吧
+    url: https://github.com/xaoxuu/
+  content: 
+    - '如果您喜欢我的文章，希望能够关注我的微信公众号 RainCode，您的关注是莫大的鼓励 ❤ '
+    - '[<img src="http://img.rain7.top/wx.png" height="200px">](https://github.com/LuckRain7)'
+
+# -----------
+# 通用列表部件
+# -----------
+# 您可以创建用于展示任何链接列表的列表部件。
+# 列表的 rows 中的每一项支持的属性有： name、url、icon、img、avatar，
+# 其中 img 是方形图片的链接，avatar 是圆形图片的链接。
+# -------------------------------------------------------------
+
+wiki-hexo-theme:
+  class: list
+  display: [desktop, mobile] # [desktop, mobile]
+  header:
+    icon: fas fa-chevron-left
+    title: wiki-hexo-theme 组件
+    url: /wiki/
+  rows:
+    - name: Volantis for Hexo
+      url: /wiki/volantis/
+    - name: Resume for Hexo
+      url: /wiki/resume/
+
+# 这个部件的布局继承自 list 部件，用于展示文章的参考资料。
+# 请将您的 Volantis 升级至 2.5 版本以上使用。
+# https://volantis.js.org/theme-settings/#%E6%96%87%E7%AB%A0%E7%9B%AE%E5%BD%95%E9%83%A8%E4%BB%B6
+references:
+  class: references # is subclass of list
+  display: [desktop, mobile] # [desktop, mobile]
+  header:
+    icon: fas fa-quote-left
+    title: 参考资料
+related_repos:
+  class: references # is subclass of list
+  display: [desktop, mobile] # [desktop, mobile]
+  header:
+    icon: fab fa-github
+    title: 源码链接
+
+
+# -----------
+# 通用网格部件
+# -----------
+# 您可以创建用于展示任何链接列表的网格部件。
+# 网格默认根据文字长度自动确定每一个格子的宽度，如果文字长短不一，
+# 建议通过设置 fixed: true 来固定宽度，此时文字过长的格子中的文字会换行显示。
+# -------------------------------------------------------------
+
+feedback:
+  class: grid
+  display: [desktop, mobile]
+  header:
+    icon: fas fa-headset
+    title: 联系开发者(网格组件)
+    url: https://github.com/xaoxuu/hexo-theme-volantis
+  fixed: true # 固定宽度
+  rows:
+    - name: 反馈BUG
+      icon: fas fa-bug
+      url: https://github.com/xaoxuu/hexo-theme-volantis/issues/new?assignees=&template=bug-report.md
+    - name: 疑问求助
+      icon: fas fa-question-circle
+      url: https://github.com/xaoxuu/hexo-theme-volantis/issues/new?labels=疑问&template=question-report.md
+    - name: 提个建议
+      icon: fas fa-lightbulb
+      url: https://github.com/xaoxuu/hexo-theme-volantis/issues/new?assignees=&labels=建议&template=feature-request.md
+
+
+
+
+# -----------
+# 通用页面部件
+# -----------
+# 您可以把整个页面的md内容作为一个小部件渲染显示出来。
+# 只需要设置小部件里的 pid 属性和文章的 front-matter 中设置一样的 pid 即可。 
+# content 代表这个部件显示的内容，可选 excerpt，more，content 分别对应文章的摘要、摘要后面的内容、全文。
+# -------------------------------------------------------------
+
+test:
+  class: page
+  display: [desktop, mobile]
+  pid: haha
+  content: excerpt # excerpt, more, content
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
