@@ -25,7 +25,8 @@ pretty_urls:
 source_dir: source
 public_dir: public
 tag_dir: tags
-archive_dir: archives
+# archive_dir: archives
+archive_dir: archives/index
 category_dir: categories
 code_dir: downloads/code
 i18n_dir: :lang
@@ -90,12 +91,11 @@ include:
 exclude:
 ignore:
 
-# Extensions
+# Extensions 主题扩展
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-# theme: landscape
 theme: volantis
-# theme: hexo-theme-moustache
+
 
 
 # Deployment
