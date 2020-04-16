@@ -3,6 +3,8 @@
 #                    |=================|
 
 # The following can be written in `blog/source/_data/layout.yml`
+
+
 # 文章列表（主页、自定义的列表）布局
 on_list:
   # 列表中每一篇文章的meta信息 [title, author, category, date, wordcount, top]
@@ -11,6 +13,7 @@ on_list:
   sidebar: [blogger, category, tagcloud, qrcode]
   # read more button
   readmore: Read More <i class="fas fa-chevron-right"></i>
+
 # 页面布局
 on_page:
   # 文章页面主体元素，你也可以在页面的Front-matter中设置
@@ -23,6 +26,9 @@ on_page:
     footer: [updated, tags, btns, share]
   # 文章页面的侧边栏
   sidebar: [qrcode, toc]
+
+
+  
 # 文章布局，参数继承自 on_page
 on_post:
   # 文章页脚，自动在每一篇文章末尾添加

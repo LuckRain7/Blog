@@ -1,5 +1,5 @@
 # 导航菜单栏
-- name: 博客
+- name: 首页
   icon: fas fa-rss
   url: /
 - name: 分类
@@ -11,7 +11,7 @@
 - name: 归档
   icon: fas fa-archive
   url: archives/
-- name: hello
+- name: 友联
   icon: fas fa-link
   url: friends/
 - name: 关于

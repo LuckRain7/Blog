@@ -1,6 +1,4 @@
 ---
-title: nihao
+title: {{ title }}
 date: {{ date }}
 ---
-
-sss

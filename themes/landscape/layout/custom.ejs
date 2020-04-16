@@ -1,7 +1,0 @@
-<% if(page.mytype === 'entry') { %>
-	<%- partial('_partial/article', {post: page, index: false}) %>
-<% } else if(page.mytype === 'about') { %>
-	<%- partial('_custom/about') %>
-<% } else { %>
-	<%- partial('_partial/article', {post: page, index: false}) %>
-<% } %>
