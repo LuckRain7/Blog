@@ -16,7 +16,7 @@ hexo generate
 cd public
 
 # 如果是发布到自定义域名
-echo 'hexo.rain7.top' > CNAME
+echo 'www.rain7.top' > CNAME
 
 # git
 git init
@@ -24,7 +24,7 @@ git add -A
 git commit -m 'deploy'
 
 # 推送
-git push -f git@github.com:LuckRain7/blog.git master:pages
+git push -f git@github.com:LuckRain7/blog.git master:gh-pages
 
 
 cd -

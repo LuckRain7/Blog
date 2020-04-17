@@ -23,7 +23,11 @@ on_page:
   # 如果tags放置在meta.header中，那么在post列表中不显示（因为卡片下方已经有了）
   meta:
     header: [title, author, category, date, top]
-    footer: [updated, tags, btns, share]
+    footer: [updated, 
+    tags, 
+    btns, 
+    # share # 下方qq空间微信分享
+    ]
   # 文章页面的侧边栏
   sidebar: [qrcode, toc]
 
@@ -36,10 +40,10 @@ on_post:
     [
       references,
       related_repos,
-      copyright,
+      copyright, # 内容协议
       donate,
-      repos,
-      wiki-hexo-theme,
-      feedback,
+      repos, # wx二维码
+      # wiki-hexo-theme,
+      # feedback,
     ]
 # 其他的页面布局暂时等于 on_list
