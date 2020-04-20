@@ -16,7 +16,7 @@ hexo generate
 cd public
 
 # 如果是发布到自定义域名
-echo 'www.rain7.top' > CNAME
+echo 'luck.rain7.top' > CNAME
 
 # git
 git init
