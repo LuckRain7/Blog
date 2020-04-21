@@ -8,7 +8,7 @@
     "deploy": "hexo deploy",
     "server": "hexo server",
     "dev": "hexo clean & hexo server",
-    "p":"bash deploy.sh"
+    "deploy":"bash deploy.sh"
   },
   "hexo": {
     "version": "4.2.0"
