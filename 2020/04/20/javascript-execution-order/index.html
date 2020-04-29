@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html>
+<head hexo-theme='https://volantis.js.org/#1.0.1'>
+  <meta charset="utf-8">
+  <!-- SEO相关 -->
+  
+    
+  
+  <!-- 渲染优化 -->
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- 页面元数据 -->
+  
+    <title>一道关于JavaScript 代码执行顺序的面试题解析 - 震雨的个人网站</title>
+  
+    <meta name="keywords" content="JavaScript">
+  
+  
+    <meta name="description" content="最近写了一些异步递归的代码，着实有点头疼，索性重新研究一下JavaScript 代码执行顺序，并附上一道面试题的解析。">
+  
+
+  <!-- feed -->
+  
+
+  <!-- import meta -->
+  
+
+  <!-- link -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13/css/all.min.css">
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.css">
+
+  
+
+  
+
+  
+
+  <!-- import link -->
+  
+
+  
+  
+    
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+  <script>
+    function setLoadingBarProgress(num) {
+      document.getElementById('loading-bar').style.width=num+"%";
+    }
+  </script>
+
+  
+  
+</head>
+
+<body>
+  
+  <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+<header class="l_header shadow blur">
+  <div class='container'>
+  <div class='wrapper'>
+    <div class='nav-sub'>
+      <p class="title"></p>
+      <ul class='switcher nav-list-h'>
+        <li><a class="s-comment fas fa-comments fa-fw" target="_self" href='javascript:void(0)'></a></li>
+        
+          <li><a class="s-toc fas fa-list fa-fw" target="_self" href='javascript:void(0)'></a></li>
+        
+      </ul>
+    </div>
+		<div class="nav-main">
+      
+        
+        <a class="title flat-box" target="_self" href='/'>
+          
+          
+          
+            LuckRain7
+          
+          
+        </a>
+      
+
+			<div class='menu navigation'>
+				<ul class='nav-list-h'>
+          
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/
+                  
+                  
+                  
+                    id="home"
+                  >
+                  <i class='fas fa-rss fa-fw'></i>首页
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/categories/
+                  
+                  
+                  
+                    id="categories"
+                  >
+                  <i class='fas fa-folder-open fa-fw'></i>分类
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/tags/
+                  
+                  
+                  
+                    id="tags"
+                  >
+                  <i class='fas fa-tags fa-fw'></i>标签
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/archives/
+                  
+                  
+                  
+                    id="archives"
+                  >
+                  <i class='fas fa-archive fa-fw'></i>归档
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="flat-box" href=/about/
+                  
+                  
+                  
+                    id="about"
+                  >
+                  <i class='fas fa-info-circle fa-fw'></i>关于
+                </a>
+                
+              </li>
+            
+          
+          
+				</ul>
+			</div>
+
+      <div class="m_search">
+        <form name="searchform" class="form u-search-form">
+          <i class="icon fas fa-search fa-fw"></i>
+          <input type="text" class="input u-search-input" placeholder="搜索" />
+        </form>
+      </div>
+
+			<ul class='switcher nav-list-h'>
+				
+					<li><a class="s-search fas fa-search fa-fw" target="_self" href='javascript:void(0)'></a></li>
+				
+				<li>
+          <a class="s-menu fas fa-bars fa-fw" target="_self" href='javascript:void(0)'></a>
+          <ul class="menu-phone list-v navigation white-box">
+            
+              
+            
+              <li>
+                <a class="flat-box" href=/
+                  
+                  
+                  
+                    id="home"
+                  >
+                  <i class='fas fa-rss fa-fw'></i>首页
+                </a>
+                
+              </li>
+            
+          
+            
+              
+            
+              <li>
+                <a class="flat-box" href=/categories/
+                  
+                  
+                  
+                    id="categories"
+                  >
+                  <i class='fas fa-folder-open fa-fw'></i>分类
+                </a>
+                
+              </li>
+            
+          
+            
+              
+            
+              <li>
+                <a class="flat-box" href=/tags/
+                  
+                  
+                  
+                    id="tags"
+                  >
+                  <i class='fas fa-tags fa-fw'></i>标签
+                </a>
+                
+              </li>
+            
+          
+            
+              
+            
+              <li>
+                <a class="flat-box" href=/archives/
+                  
+                  
+                  
+                    id="archives"
+                  >
+                  <i class='fas fa-archive fa-fw'></i>归档
+                </a>
+                
+              </li>
+            
+          
+            
+              
+            
+              <li>
+                <a class="flat-box" href=/about/
+                  
+                  
+                  
+                    id="about"
+                  >
+                  <i class='fas fa-info-circle fa-fw'></i>关于
+                </a>
+                
+              </li>
+            
+          
+            
+          </ul>
+        </li>
+			</ul>
+		</div>
+	</div>
+  </div>
+</header>
+
+<script>setLoadingBarProgress(40);</script>
+
+
+
+  <div class="l_body nocover">
+    <div class='body-wrapper'>
+      
+
+<div class='l_main'>
+  <!-- 文章详情页面 -->
+<!-- 文章详情页面 -->
+<!-- 文章详情页面 -->
+
+
+  
+    <article id="post" class="post white-box shadow article-type-post" itemscope itemprop="blogPost">
+      
+
+
+  <section class='meta'>
+    
+      
+      
+      <div class="meta" id="header-meta">
+        
+          
+  
+    <h1 class="title">
+      <a href="/2020/04/20/javascript-execution-order/">
+        一道关于JavaScript 代码执行顺序的面试题解析
+      </a>
+    </h1>
+  
+
+
+        
+        <div class='new-meta-box'>
+          
+            
+          
+            
+              
+<div class='new-meta-item author'>
+  <a href="https://github.com/LuckRain7" target="_blank" rel="nofollow noopener">
+    <img src="http://img.rain7.top/zhenyu-logo">
+    <p>LuckRain7</p>
+  </a>
+</div>
+
+            
+          
+            
+              
+  
+  <div class='new-meta-item category'>
+    <a href='/categories/JavaScript/' rel="nofollow">
+      <i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>
+      <p>JavaScript</p>
+    </a>
+  </div>
+
+
+            
+          
+            
+              <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
+    <p>发布于：2020年4月20日</p>
+  </a>
+</div>
+
+            
+          
+            
+              
+
+            
+          
+        </div>
+        
+          <hr>
+        
+      </div>
+    
+  </section>
+
+
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          
+          <p><img src="/images/2020/04/20/javascript.png" alt="javascript"></p>
+<h2 id="0-引言："><a href="#0-引言：" class="headerlink" title="0.  引言："></a>0.  引言：</h2><p>最近写了一些异步递归的代码，着实有点头疼，索性重新研究一下JavaScript 代码执行顺序，并附上一道面试题的解析。</p>
+<h2 id="1-JavaScript-代码执行顺序"><a href="#1-JavaScript-代码执行顺序" class="headerlink" title="1.  JavaScript 代码执行顺序"></a>1.  JavaScript 代码执行顺序</h2><blockquote>
+<p>首先我们了解几个概念</p>
+</blockquote>
+<h3 id="1-1-微任务-宏任务"><a href="#1-1-微任务-宏任务" class="headerlink" title="1.1  微任务/宏任务"></a>1.1  微任务/宏任务</h3><p>异步队列中包括：微任务（micro-task） 和 宏任务（macro-task） </p>
+<p>微任务包括： <code>process.nextTick</code> ，<code>Promise</code> （ <code>process.nextTick</code> 为 Node 独有）</p>
+<p>宏任务包括： <code>script</code> ， <code>setTimeout</code> ，<code>setInterval</code> ，<code>setImmediate</code> ，<code>I/O</code> ，<code>UI rendering</code></p>
+<p>Tips：</p>
+<ul>
+<li>微任务优先级高于宏任务的前提是：同步代码已经执行完成。因为 <code>script</code>  属于宏任务，程序开始后会首先执行同步脚本，也就是<code>script</code> 。</li>
+<li><code>Promise</code> 里边的代码属于同步代码，<code>.then()</code> 中执行的代码才属于异步代码。</li>
+</ul>
+<h3 id="1-2-Event-Loop（事件轮询）"><a href="#1-2-Event-Loop（事件轮询）" class="headerlink" title="1.2  Event Loop（事件轮询）"></a>1.2  Event Loop（事件轮询）</h3><p>Event Loop 是一个程序结构，用于等待和发送消息和事件。</p>
+<p>Event Loop 执行顺序如下所示：</p>
+<ul>
+<li>首先执行同步代码（宏任务）</li>
+<li>当执行完所有同步代码后，执行栈为空，查询是否有异步代码需要执行</li>
+<li>执行所有微任务</li>
+<li>当执行完所有微任务后，如有必要会渲染页面</li>
+<li>然后开始下一轮 Event Loop，执行宏任务中的异步代码，也就是 <code>setTimeout</code> 中的回调函数</li>
+</ul>
+<p>Tips：简化讲：先执行一个宏任务（script同步代码），然后执行并清空微任务，再执行一个宏任务，然后执行并清空微任务，再执行一个宏任务，再然后执行并清空微任务……如此循环往复（一个宏任务 -&gt; 清空微任务 -&gt; 一个宏任务 -&gt; 清空微任务）</p>
+<p><img src="/images/2020/04/20/javascript%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F.png" alt="javascript代码执行顺序"></p>
+<h2 id="2-面试题详解"><a href="#2-面试题详解" class="headerlink" title="2.  面试题详解"></a>2.  面试题详解</h2><h3 id="2-1-题目"><a href="#2-1-题目" class="headerlink" title="2.1  题目"></a>2.1  题目</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">" set1"</span>);</span><br><span class="line">  <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve</span>) </span>&#123;</span><br><span class="line">    resolve();</span><br><span class="line">  &#125;).then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve</span>) </span>&#123;</span><br><span class="line">      resolve();</span><br><span class="line">    &#125;).then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">"then4"</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"then2 "</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"pr1"</span>);</span><br><span class="line">  resolve();</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"then1"</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"set2"</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve</span>) </span>&#123;</span><br><span class="line">  resolve();</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"then3"</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-执行过程解析"><a href="#2-2-执行过程解析" class="headerlink" title="2.2  执行过程解析"></a>2.2  执行过程解析</h3><p>执行所有同步代码（第一次宏任务）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="comment">// setTimeout 内 function 放入宏任务</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">" set1"</span>);</span><br><span class="line">  <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve</span>) </span>&#123;</span><br><span class="line">    resolve();</span><br><span class="line">  &#125;).then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve</span>) </span>&#123;</span><br><span class="line">      resolve();</span><br><span class="line">    &#125;).then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">"then4"</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"then2 "</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"pr1"</span>); <span class="comment">// Promise里边的代码直接执行  打印 pr1</span></span><br><span class="line">  resolve();</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"then1"</span>); <span class="comment">// Promise.then 放入微任务</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"set2"</span>); <span class="comment">// setTimeout内function 放入宏任务</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">2</span>); <span class="comment">// 打印 2</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve</span>) </span>&#123;</span><br><span class="line">  resolve();</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"then3"</span>); <span class="comment">//Promise.then 放入微任务</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 此时控制台打印 ： pr1  &gt;  2</span></span><br><span class="line"><span class="comment">// 异步任务队列：[微任务数:2][宏任务数：2]</span></span><br><span class="line"><span class="comment">// 执行并清空微任务</span></span><br></pre></td></tr></table></figure>
+
+<p>执行并清空微任务</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"then1"</span>);  <span class="comment">// 输出 then1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"then3"</span>); <span class="comment">// 输出 then3</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 此时控制台打印 ： then1  &gt;  then3</span></span><br><span class="line"><span class="comment">// 异步任务：[微任务数:0][宏任务数：2]</span></span><br><span class="line"><span class="comment">// 执行一个宏任务</span></span><br></pre></td></tr></table></figure>
+
+<p>执行一个宏任务</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">" set1"</span>);   <span class="comment">//打印 set1</span></span><br><span class="line">  <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve</span>) </span>&#123;</span><br><span class="line">    resolve();</span><br><span class="line">  &#125;).then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;     <span class="comment">// Promise.then 放入微任务</span></span><br><span class="line">    <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve</span>) </span>&#123;</span><br><span class="line">      resolve();</span><br><span class="line">    &#125;).then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">"then4"</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"then2 "</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 此时控制台打印 ： set1</span></span><br><span class="line"><span class="comment">// 异步任务：[微任务数:1][宏任务数：1]</span></span><br><span class="line"><span class="comment">// 执行并清空微任务</span></span><br></pre></td></tr></table></figure>
+
+<p>执行并清空微任务</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;     </span><br><span class="line">    <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve</span>) </span>&#123;</span><br><span class="line">      resolve();      </span><br><span class="line">    &#125;).then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">"then4"</span>);   <span class="comment">// Promise.then 放入微任务</span></span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"then2 "</span>);    <span class="comment">// 打印 then2</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 此时控制台打印 ： then2</span></span><br><span class="line"><span class="comment">// 异步任务：[微任务数:1][宏任务数：1]</span></span><br><span class="line"><span class="comment">// 此时微任务列表增加并未清空，继续执行微任务</span></span><br></pre></td></tr></table></figure>
+
+<p>此时微任务列表增加并未清空，继续执行微任务</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">"then4"</span>);   <span class="comment">// 打印 then4</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 此时控制台打印 ： then4</span></span><br><span class="line"><span class="comment">// 异步任务：[微任务数:0][宏任务数：1]</span></span><br><span class="line"><span class="comment">// 执行宏任务</span></span><br></pre></td></tr></table></figure>
+<p>执行宏任务</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"set2"</span>); <span class="comment">// 打印 set2</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 此时控制台打印 ： set2</span></span><br><span class="line"><span class="comment">// 异步任务：[微任务数:0][宏任务数：0]</span></span><br><span class="line"><span class="comment">// 程序结束</span></span><br></pre></td></tr></table></figure>
+
+<p>完整输入顺序</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">pr1</span><br><span class="line"><span class="number">2</span></span><br><span class="line">then1</span><br><span class="line">then3</span><br><span class="line">set1</span><br><span class="line">then2 </span><br><span class="line">then4</span><br><span class="line">set2</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="推荐阅读"><a href="#推荐阅读" class="headerlink" title="推荐阅读"></a>推荐阅读</h3><ul>
+<li><p><a href="https://mp.weixin.qq.com/s/QLabNBOChsKmrpvEXJrpNg" target="_blank" rel="noopener">一道“简单”的 This 题解析</a> </p>
+</li>
+<li><p><a href="https://rain7.top/article/如何在Vue中优雅的使用防抖节流.html" target="_blank" rel="noopener">如何在Vue中优雅的使用防抖、节流</a> </p>
+</li>
+<li><p><a href="https://rain7.top/article/如何在Javascript中对Array.forEach使用异步函数.html" target="_blank" rel="noopener">如何在 Array.forEach 中正确使用 Async</a></p>
+</li>
+<li><p><a href="https://rain7.top/article/如何在Array.filter中正确使用Async.html" target="_blank" rel="noopener">如何在 Array.filter 中正确使用 Async</a></p>
+</li>
+<li><p><a href="https://mp.weixin.qq.com/s/9wl8-SYspr3s358Tf0CmSg" target="_blank" rel="noopener">如何在 Array.reduce 中正确使用 async</a></p>
+</li>
+</ul>
+
+          
+            <br>
+            
+              
+  
+    
+    
+
+
+
+  
+
+  
+    
+    
+
+
+
+  
+
+  
+    
+    
+
+<section class="widget copyright  desktop mobile">
+  <div class='content'>
+    
+      <blockquote>
+        
+          
+            <p>博客内容遵循 署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</p>
+
+          
+        
+      </blockquote>
+    
+  </div>
+</section>
+
+  
+
+  
+    
+    
+
+<section class="widget qrcode  desktop mobile">
+  
+
+  <div class='content article-entry'>
+    
+  </div>
+</section>
+
+  
+
+  
+    
+    
+
+<section class="widget text  desktop">
+  
+  <header>
+    
+      <a href='https://github.com/LuckRain7' target="_blank" rel="noopener"><i class="fab fa-github fa-fw" aria-hidden="true"></i><span class='name'>点个赞吧</span></a>
+    
+  </header>
+
+
+  <div class='content'>
+    
+      <p>如果您喜欢我的文章，希望能够关注我的微信公众号 RainCode，您的关注是莫大的鼓励 ❤ </p>
+
+    
+      <p><a href="https://github.com/LuckRain7" target="_blank" rel="noopener"><img src="/images/wx.png" height="200px"></a></p>
+
+    
+  </div>
+</section>
+
+  
+
+
+            
+          
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2020-04-20T12:02:12+08:00">
+  <a class='notlink'>
+    <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+    <p>更新于：2020年4月20日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/JavaScript/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>JavaScript</p></a></div>
+
+
+        
+      
+        
+          
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+          <div class="prev-next">
+            
+              <a class='prev' href='/2020/04/22/async-in-Array.map/'>
+                <p class='title'><i class="fas fa-chevron-left" aria-hidden="true"></i>如何正确的在 Array.map 使用 async</p>
+                <p class='content'>
+ 在 map 中返回Promises，然后等待结果 
+  本文译自How to use async functions with Array.map in Javascript - Tamás...</p>
+              </a>
+            
+            
+              <a class='next' href='/2020/04/17/git-use/'>
+                <p class='title'>Git 常用命令及应用这一篇就够了（新手向）<i class="fas fa-chevron-right" aria-hidden="true"></i></p>
+                <p class='content'>1.  git 常用命令1.1   常用命令123456789101112131415161718192021222324252627282930313233343536373839404142...</p>
+              </a>
+            
+          </div>
+        
+      </section>
+    </article>
+  
+
+  
+    <!-- 显示推荐文章和评论 -->
+
+
+
+  
+
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+
+
+  <script>
+    window.subData = {
+      title: '一道关于JavaScript 代码执行顺序的面试题解析',
+      tools: true
+    }
+  </script>
+
+
+</div>
+<aside class='l_side'>
+  
+  
+
+  
+    
+    
+
+
+  <section class="widget toc-wrapper shadow desktop mobile">
+    
+  <header>
+    
+      <i class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
+    
+  </header>
+
+
+    <div class='content'>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0-引言："><span class="toc-text">0.  引言：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-JavaScript-代码执行顺序"><span class="toc-text">1.  JavaScript 代码执行顺序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-微任务-宏任务"><span class="toc-text">1.1  微任务&#x2F;宏任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-Event-Loop（事件轮询）"><span class="toc-text">1.2  Event Loop（事件轮询）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-面试题详解"><span class="toc-text">2.  面试题详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-题目"><span class="toc-text">2.1  题目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-执行过程解析"><span class="toc-text">2.2  执行过程解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#推荐阅读"><span class="toc-text">推荐阅读</span></a></li></ol></li></ol>
+    </div>
+  </section>
+
+
+  
+
+
+</aside>
+
+
+  
+  <footer class="clearfix">
+    <br><br>
+    
+      
+        <br>
+        <div class="social-wrapper">
+          
+            
+              <a href="mailto:763839938@qq.com"
+                class="social fas fa-envelope flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+            
+              <a href="https://github.com/LuckRain7"
+                class="social fab fa-github flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+              </a>
+            
+          
+        </div>
+      
+    
+      
+        <div><p>博客内容遵循 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
+</div>
+      
+    
+      
+        <div class='copyright'>
+        <p><a href="https://github.com/LuckRain7" target="_blank" rel="noopener">Copyright © 2020- LuckRain7</a></p>
+
+        </div>
+      
+    
+      
+        
+          <div><p><a href="http://www.beian.miit.gov.cn/" target="_blank" rel="noopener">备案号：鲁 ICP 备 19058623 号</a></p>
+</div>
+        
+      
+    
+  </footer>
+
+<script>setLoadingBarProgress(80);</script>
+
+
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+    <a class="s-top fas fa-arrow-up fa-fw" href='javascript:void(0)'></a>
+  </div>
+  
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4/dist/jquery.min.js"></script>
+
+
+  <script>
+    
+    var SEARCH_SERVICE = "hexo" || "hexo";
+    var ROOT = "/" || "/";
+    if (!ROOT.endsWith('/')) ROOT += '/';
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2/js/instant_page.js" type="module" defer integrity="sha384-OeDn4XE77tdHo8pGtE1apMPmAipjoxUQ++eeJa6EtJCfHlvijigWiJpD7VDPWXV1"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/node-waves@0.7.6/dist/waves.min.js"></script>
+
+  <script type="text/javascript">
+    $(function() {
+      Waves.attach('.flat-btn', ['waves-button']);
+      Waves.attach('.float-btn', ['waves-button', 'waves-float']);
+      Waves.attach('.float-btn-light', ['waves-button', 'waves-float', 'waves-light']);
+      Waves.attach('.flat-box', ['waves-block']);
+      Waves.attach('.float-box', ['waves-block', 'waves-float']);
+      Waves.attach('.waves-image');
+      Waves.init();
+    });
+  </script>
+
+
+  <script async src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-busuanzi@2.3/js/busuanzi.pure.mini.js"></script>
+
+
+
+  
+  
+  
+    
+<script src="https://cdn.jsdelivr.net/npm/jquery-backstretch@2.1.18/jquery.backstretch.min.js"></script>
+
+    <script type="text/javascript">
+      $(function(){
+        var imgs=["https://cdn.jsdelivr.net/gh/xaoxuu/cdn-wallpaper/abstract/BBC19066-E176-47C2-9D22-48C81EE5DF6B.jpeg"];
+        if ('false' == 'true') {
+          function shuffle(arr){
+            /*From countercurrent-time*/
+            var n = arr.length;
+            while(n--) {
+              var index = Math.floor(Math.random() * n);
+              var temp = arr[index];
+              arr[index] = arr[n];
+              arr[n] = temp;
+            }
+          }
+          shuffle(imgs);
+        }
+        if ('') {
+          $('').backstretch(
+            imgs,
+          {
+            duration: "20000",
+            fade: "1500"
+          });
+        } else {
+          $.backstretch(
+            imgs,
+          {
+            duration: "20000",
+            fade: "1500"
+          });
+        }
+      });
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+<script src="/js/app.js"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2.4/js/search.js"></script>
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2/js/comment_typing.js"></script>
+
+
+
+
+
+
+<!-- 复制 -->
+
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="fas fa-copy"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('fa-copy');
+        $icon.addClass('fa-check-circle');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('fa-check-circle');
+          $icon.addClass('fa-copy');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('fa-copy');
+        $icon.addClass('fa-times-circle');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('fa-times-circle');
+          $icon.addClass('fa-copy');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+
+
+
+
+<!-- fancybox -->
+
+  <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+  let LAZY_LOAD_IMAGE = "";
+  $(".article-entry").find("div.fancybox").find("img").each(function () {
+      var element = document.createElement("a");
+      $(element).attr("data-fancybox", "gallery");
+      $(element).attr("href", $(this).attr("src"));
+      /* 图片采用懒加载处理时,
+       * 一般图片标签内会有个属性名来存放图片的真实地址，比如 data-original,
+       * 那么此处将原本的属性名src替换为对应属性名data-original,
+       * 修改如下
+       */
+       if (LAZY_LOAD_IMAGE) {
+         $(element).attr("href", $(this).attr("data-original"));
+       }
+      $(this).wrap(element);
+  });
+</script>
+
+
+
+
+
+
+  <script>setLoadingBarProgress(100);</script>
+</body>
+</html>
